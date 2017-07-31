@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         Activity activity = (Activity) this;
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         fullscreen();
         setContentView(R.layout.activity_main);
