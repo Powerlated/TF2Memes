@@ -36,14 +36,29 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
+    boolean musicPlayed;
+
     @Override
-    public void onResume() {
+    public void onStart() {
         super.onStart();
         playMusic();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopMusic();
+    }
+
+    private void stopMusic() {
+        music = MediaPlayer.create(MainActivity.this,R.raw.music);
+        music.stop();
+        Log.d("TF2Memes", "Stopped music");
+    }
 
     private void playMusic() {
+        if (musicPlayed) return;
+        musicPlayed = true;
         music = MediaPlayer.create(MainActivity.this,R.raw.music);
         music.start();
         Log.d("TF2Memes", "Played music");
