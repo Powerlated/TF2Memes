@@ -2,15 +2,20 @@ package com.powerlated.tf2memes;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
+    MediaPlayer music, sound, sfx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,4 +35,30 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
+    @Override
+    public void onResume() {
+        super.onStart();
+        playMusic();
+    }
+
+
+    private void playMusic() {
+        music = MediaPlayer.create(MainActivity.this,R.raw.music);
+        music.start();
+        Log.d("TF2Memes", "Played music");
+    }
+
+    private void playSound() {
+        sound = MediaPlayer.create(MainActivity.this,R.raw.sound);
+        sound.start();
+        Log.d("TF2Memes", "Played sound");
+    }
+
+    private void playSfx() {
+        sfx = MediaPlayer.create(MainActivity.this,R.raw.sfx);
+        sfx.start();
+        Log.d("TF2Memes", "Played sfx");
+    }
+
 }
