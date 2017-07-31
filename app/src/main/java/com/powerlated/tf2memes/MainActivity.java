@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         playMusic();
+        playVideo();
     }
 
     @Override
@@ -79,9 +81,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playVideo() {
-        VideoView videoview = (VideoView) findViewById(R.id.videoView);
-        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.door_effect);
-        videoview.setVideoURI(uri);
-        videoview.start();
+        VideoView videoView = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://" +getPackageName() + "/" +R.raw.door_effect);
+        videoView.setMediaController(new MediaController(this));
+        videoView.setVideoURI(uri);
+        videoView.requestFocus();
+        videoView.start();
     }
 }
