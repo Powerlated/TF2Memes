@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer music, sound, sfx;
@@ -76,4 +78,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TF2Memes", "Played sfx");
     }
 
+    private void playVideo() {
+        VideoView videoview = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.door_effect);
+        videoview.setVideoURI(uri);
+        videoview.start();
+    }
 }
