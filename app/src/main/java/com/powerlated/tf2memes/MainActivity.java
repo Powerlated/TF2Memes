@@ -11,6 +11,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,6 +20,8 @@ import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
     MediaPlayer music, sound, sfx;
+
+    long time = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playSound() {
-        sound = MediaPlayer.create(MainActivity.this,R.raw.sound);
-        sound.start();
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
+        mp.start();
         Log.d("TF2Memes", "Played sound");
     }
 
@@ -87,5 +90,11 @@ public class MainActivity extends AppCompatActivity {
         videoView.setVideoURI(uri);
         videoView.requestFocus();
         videoView.start();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        playSound();
+        return true;
     }
 }
