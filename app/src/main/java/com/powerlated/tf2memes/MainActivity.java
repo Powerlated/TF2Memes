@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         playMusic();
         playVideo();
+        playSfx();
     }
 
     @Override
@@ -81,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playVideo() {
-        VideoView videoView = (VideoView) findViewById(R.id.videoView);
+        VideoView videoView = (VideoView) findViewById(R.id.videoViewRelative);
         Uri uri = Uri.parse("android.resource://" +getPackageName() + "/" +R.raw.door_effect);
-        videoView.setMediaController(new MediaController(this));
         videoView.setVideoURI(uri);
         videoView.requestFocus();
         videoView.start();
