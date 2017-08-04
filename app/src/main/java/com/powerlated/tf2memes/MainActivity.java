@@ -1,14 +1,10 @@
 package com.powerlated.tf2memes;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.MediaController;
 import android.widget.VideoView;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,17 +88,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playSound() {
+        int randomNumber = ThreadLocalRandom.current().nextInt(1, 10 + 1);
+
         if (soundPlaying) return;
 
         soundPlaying = true;
 
-        sound = MediaPlayer.create(this, R.raw.sound);
+        if (randomNumber == 1) {
+            sound = MediaPlayer.create(this, R.raw.medic_taunt);
+        } else {
+            sound = MediaPlayer.create(this, R.raw.sound);
+        }
 
         PlaybackParams params = new PlaybackParams();
 
-        params.setPitch(pitch);
-
-        sound.setPlaybackParams(params);
+        if (randomNumber != 1){
+            params.setPitch(pitch);
+            sound.setPlaybackParams(params);
+        }
 
         sound.start();
 
