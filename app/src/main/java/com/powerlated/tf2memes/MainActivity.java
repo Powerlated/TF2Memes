@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,6 +20,11 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
+
+    static float pitch = 1.0f;
+    static boolean done;
+    static boolean soundPlaying;
+
     MediaPlayer music, sound, sfx;
 
     long time = System.currentTimeMillis();
@@ -47,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        playMusic();
         playVideo();
+        if (done) return;
+        done = true;
+        playMusic();
         playSfx();
     }
 
@@ -62,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
         music = MediaPlayer.create(MainActivity.this,R.raw.music);
         music.stop();
         Log.d("TF2Memes", "Stopped music");
+        music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
     }
 
     private void playMusic() {
@@ -70,18 +83,47 @@ public class MainActivity extends AppCompatActivity {
         music = MediaPlayer.create(MainActivity.this,R.raw.music);
         music.start();
         Log.d("TF2Memes", "Played music");
+        music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
     }
 
     private void playSound() {
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
-        mp.start();
+        if (soundPlaying) return;
+
+        soundPlaying = true;
+
+        sound = MediaPlayer.create(this, R.raw.sound);
+
+        PlaybackParams params = new PlaybackParams();
+
+        params.setPitch(pitch);
+
+        sound.setPlaybackParams(params);
+
+        sound.start();
+
         Log.d("TF2Memes", "Played sound");
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+                pitch += 0.1;
+                soundPlaying = false;
+            }
+        });
     }
 
     private void playSfx() {
         sfx = MediaPlayer.create(MainActivity.this,R.raw.sfx);
         sfx.start();
         Log.d("TF2Memes", "Played sfx");
+        sfx.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
     }
 
     private void playVideo() {
