@@ -5,8 +5,8 @@ import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,10 +14,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
+import com.squareup.seismic.ShakeDetector;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShakeDetector.Listener {
 
     static int pootisTime;
     static float pitch = 1.0f;
@@ -173,5 +175,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent e) {
         playSound(false);
         return true;
+    }
+
+    @Override
+    public void hearShake() {
+        playSound(false);
     }
 }
