@@ -2,6 +2,7 @@ package com.powerlated.tf2memes;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
 import android.net.Uri;
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        ShakeDetector sd = new ShakeDetector(this);
+        sd.start(sensorManager);
 
         Activity activity = (Activity) this;
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
