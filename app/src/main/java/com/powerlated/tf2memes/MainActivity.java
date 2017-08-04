@@ -14,13 +14,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity {
 
+    static int pootisTime;
     static float pitch = 1.0f;
     static boolean done;
     static boolean soundPlaying;
+    static boolean musicFinished;
 
     MediaPlayer music, sound, sfx;
 
@@ -83,37 +86,57 @@ public class MainActivity extends AppCompatActivity {
         music.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
+                musicFinished = true;
             }
         });
     }
 
-    private void playSound() {
-        int randomNumber = ThreadLocalRandom.current().nextInt(1, 10 + 1);
+    private void playSound(boolean pootis) {
 
-        if (soundPlaying) return;
+        if (!musicFinished) return;
 
-        soundPlaying = true;
-
-        if (randomNumber == 1) {
-            sound = MediaPlayer.create(this, R.raw.medic_taunt);
-        } else {
-            sound = MediaPlayer.create(this, R.raw.sound);
-        }
-
-        PlaybackParams params = new PlaybackParams();
-
-        if (randomNumber != 1){
-            params.setPitch(pitch);
+        if (pootis) {
+            Random r = new Random();
+            float finalX = r.nextFloat() * (1.25f - 0.75f) + 0.75f;
+            PlaybackParams params = new PlaybackParams();
+            params.setPitch(finalX);
+            sound = MediaPlayer.create(this, R.raw.pootis);
             sound.setPlaybackParams(params);
+            sound.start();
+        } else {
+            int randomNumber = ThreadLocalRandom.current().nextInt(1, 20 + 1);
+
+            if (soundPlaying) return;
+
+            soundPlaying = true;
+
+            PlaybackParams params = new PlaybackParams();
+
+            if (randomNumber == 1 || randomNumber == 2 || randomNumber == 3 || randomNumber == 4 || randomNumber == 5) {
+                sound = MediaPlayer.create(this, R.raw.medic_taunt);
+            } else if (randomNumber == 6 || randomNumber == 7 || randomNumber == 8) {
+                sound = MediaPlayer.create(this, R.raw.pootis);
+                pootisTime = ThreadLocalRandom.current().nextInt(10, 25 + 1);
+            } else {
+                sound = MediaPlayer.create(this, R.raw.sound);
+                params.setPitch(pitch);
+                sound.setPlaybackParams(params);
+            }
+
+            Log.d("TF2Memes", "PootisNumber: " + randomNumber);
+
+            sound.start();
         }
-
-        sound.start();
-
         Log.d("TF2Memes", "Played sound");
         sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
                 pitch += 0.1;
+                if (pootisTime != 0) {
+                    playSound(true);
+                    pootisTime--;
+                    return;
+                }
                 soundPlaying = false;
             }
         });
@@ -136,11 +159,19 @@ public class MainActivity extends AppCompatActivity {
         videoView.setVideoURI(uri);
         videoView.requestFocus();
         videoView.start();
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+        {
+            public void onCompletion(MediaPlayer mp)
+            {
+
+            }
+        });
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        playSound();
+        playSound(false);
         return true;
     }
 }
