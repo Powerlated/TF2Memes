@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     static boolean done;
     static boolean soundPlaying;
     static boolean musicFinished;
+    static boolean videoPlayed;
+    static boolean musicPlayed;
 
     MediaPlayer music, sound, sfx;
 
@@ -54,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
         decorView.setSystemUiVisibility(uiOptions);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-    boolean musicPlayed;
 
     @Override
     public void onStart() {
@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     private void playVideo() {
+
         VideoView videoView = (VideoView) findViewById(R.id.videoViewRelative);
         Uri uri = Uri.parse("android.resource://" +getPackageName() + "/" +R.raw.door_effect);
         videoView.setVideoURI(uri);
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
             }
         });
+
     }
 
     @Override
