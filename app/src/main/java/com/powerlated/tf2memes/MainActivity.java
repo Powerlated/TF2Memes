@@ -188,4 +188,10 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     public void hearShake() {
         playSound(false);
     }
+
+    @Override
+    public void onUserLeaveHint() {
+        finish();
+        super.onUserLeaveHint();
+    }
 }
